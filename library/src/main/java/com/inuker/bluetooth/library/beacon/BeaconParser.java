@@ -11,47 +11,58 @@ import java.util.List;
  * Created by dingjikerbo on 2016/11/16.
  */
 
-public class BeaconParser {
+public class BeaconParser
+{
 
     private byte[] bytes;
 
     private ByteBuffer mByteBuffer;
 
-    public BeaconParser(BeaconItem item) {
+    public BeaconParser(BeaconItem item)
+    {
         this(item.bytes);
     }
 
-    public BeaconParser(byte[] bytes) {
+    public BeaconParser(byte[] bytes)
+    {
         this.bytes = bytes;
         mByteBuffer = ByteBuffer.wrap(bytes).order(
                 ByteOrder.LITTLE_ENDIAN);
     }
 
-    public void setPosition(int position) {
+    public void setPosition(int position)
+    {
         mByteBuffer.position(position);
     }
 
-    public int readByte() {
+    public int readByte()
+    {
         return mByteBuffer.get() & 0xff;
     }
 
-    public int readShort() {
+    public int readShort()
+    {
         return mByteBuffer.getShort() & 0xffff;
     }
 
-    public boolean getBit(int n, int index) {
+    public boolean getBit(int n, int index)
+    {
         return (n & (1 << index)) != 0;
     }
 
-    public static List<BeaconItem> parseBeacon(byte[] bytes) {
+    public static List<BeaconItem> parseBeacon(byte[] bytes)
+    {
         ArrayList<BeaconItem> items = new ArrayList<BeaconItem>();
 
-        for (int i = 0; i < bytes.length; ) {
+        for (int i = 0; i < bytes.length; )
+        {
             BeaconItem item = parse(bytes, i);
-            if (item != null) {
+            if (item != null)
+            {
                 items.add(item);
                 i += item.len + 1;
-            } else {
+            } else
+            {
                 break;
             }
         }
@@ -59,21 +70,26 @@ public class BeaconParser {
         return items;
     }
 
-    private static BeaconItem parse(byte[] bytes, int startIndex) {
+    private static BeaconItem parse(byte[] bytes, int startIndex)
+    {
         BeaconItem item = null;
 
-        if (bytes.length - startIndex >= 2) {
+        if (bytes.length - startIndex >= 2)
+        {
             byte length = bytes[startIndex];
-            if (length > 0) {
+            if (length > 0)
+            {
                 byte type = bytes[startIndex + 1];
                 int firstIndex = startIndex + 2;
 
-                if (firstIndex < bytes.length) {
+                if (firstIndex < bytes.length)
+                {
                     item = new BeaconItem();
 
                     int endIndex = firstIndex + length - 2;
 
-                    if (endIndex >= bytes.length) {
+                    if (endIndex >= bytes.length)
+                    {
                         endIndex = bytes.length - 1;
                     }
 
@@ -86,5 +102,37 @@ public class BeaconParser {
         }
 
         return item;
+    }
+
+    public static int getPos(int[] A, int n, int val)
+    {
+        int low = 0, high = n - 1, mid;
+        if (n == 0 || A == null)
+            return -1;
+        while (low <= high)
+        {
+            mid = (low + high) / 2;
+            //当第一次找出相等的位置后需要继续向前查找，最后返回第一次出现的位置
+            if (val == A[mid])
+            {
+                for (int j = mid; j >= 0; j--)
+                {
+                    if (A[j] != A[mid])
+                    {
+                        mid = j + 1;
+                        break;
+                    } else if (A[j] == A[mid])
+                    {
+                        mid = j;
+                        continue;
+                    }
+                }
+                return mid;
+            } else if (val < A[mid])
+                high = mid - 1;
+            else
+                low = mid + 1;
+        }
+        return -1;
     }
 }

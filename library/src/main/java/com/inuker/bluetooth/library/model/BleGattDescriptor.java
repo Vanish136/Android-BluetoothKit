@@ -1,19 +1,18 @@
 package com.inuker.bluetooth.library.model;
 
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.os.Parcel;
 import android.os.ParcelUuid;
 import android.os.Parcelable;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * Created by liwentian on 2017/3/24.
  */
 
-public class BleGattDescriptor implements Parcelable {
+public class BleGattDescriptor implements Parcelable
+{
 
     private ParcelUuid mUuid;
 
@@ -21,72 +20,86 @@ public class BleGattDescriptor implements Parcelable {
 
     private byte[] mValue;
 
-    protected BleGattDescriptor(Parcel in) {
+    protected BleGattDescriptor(Parcel in)
+    {
         mUuid = in.readParcelable(ParcelUuid.class.getClassLoader());
         mPermissions = in.readInt();
         mValue = in.createByteArray();
     }
 
-    public BleGattDescriptor(BluetoothGattDescriptor descriptor) {
+    public BleGattDescriptor(BluetoothGattDescriptor descriptor)
+    {
         this.mUuid = new ParcelUuid(descriptor.getUuid());
         this.mPermissions = descriptor.getPermissions();
         this.mValue = descriptor.getValue();
     }
 
-    public static final Creator<BleGattDescriptor> CREATOR = new Creator<BleGattDescriptor>() {
+    public static final Creator<BleGattDescriptor> CREATOR = new Creator<BleGattDescriptor>()
+    {
         @Override
-        public BleGattDescriptor createFromParcel(Parcel in) {
+        public BleGattDescriptor createFromParcel(Parcel in)
+        {
             return new BleGattDescriptor(in);
         }
 
         @Override
-        public BleGattDescriptor[] newArray(int size) {
+        public BleGattDescriptor[] newArray(int size)
+        {
             return new BleGattDescriptor[size];
         }
     };
 
     @Override
-    public int describeContents() {
+    public int describeContents()
+    {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeParcelable(mUuid, flags);
         dest.writeInt(mPermissions);
         dest.writeByteArray(mValue);
     }
 
-    public ParcelUuid getmUuid() {
+    public ParcelUuid getUuid()
+    {
         return mUuid;
     }
 
-    public void setmUuid(ParcelUuid mUuid) {
+    public void setUuid(ParcelUuid mUuid)
+    {
         this.mUuid = mUuid;
     }
 
-    public int getmPermissions() {
+    public int getPermissions()
+    {
         return mPermissions;
     }
 
-    public void setmPermissions(int mPermissions) {
+    public void setPermissions(int mPermissions)
+    {
         this.mPermissions = mPermissions;
     }
 
-    public byte[] getmValue() {
+    public byte[] getValue()
+    {
         return mValue;
     }
 
-    public void setmValue(byte[] mValue) {
+    public void setValue(byte[] mValue)
+    {
         this.mValue = mValue;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "BleGattDescriptor{" +
-                "mUuid=" + mUuid +
-                ", mPermissions=" + mPermissions +
-                ", mValue=" + Arrays.toString(mValue) +
+                "Uuid=" + mUuid +
+                ", Permissions=" + mPermissions +
+                ", Value=" + Arrays.toString(mValue) +
                 '}';
     }
 }
