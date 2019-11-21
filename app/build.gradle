@@ -29,5 +29,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$AppCompatXVersion"
     implementation 'com.google.android.material:material:1.0.0'
-    implementation project(path: ':library')
+    implementation project(path: ':lib_bluetoothkit')
 }
